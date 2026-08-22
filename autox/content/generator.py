@@ -48,11 +48,20 @@ def pick_pillar(settings: dict[str, Any], pillar_key: str | None = None) -> dict
 
 def build_system_prompt(settings: dict[str, Any], grounding: str) -> str:
     tone = (settings.get("tone") or "").strip()
+    voice_reference = (settings.get("voice_reference") or "").strip()
+    voice_section = (
+        f"\n[本人の実際の文体サンプル(他サービスのプロフィール文などから抜粋)]\n"
+        f"{voice_reference}\n"
+        "↑内容(固有名詞やエピソード)をそのままコピーせず、あくまで話し方・ユーモアの"
+        "クセ・テンションを真似る参考としてのみ使ってください。\n"
+        if voice_reference else ""
+    )
     return (
         "あなたはX(旧Twitter)の投稿文を代筆するアシスタントです。\n"
         "本人になりすますのではなく、本人が実際に言いそうなことに忠実な下書きを作ります。\n"
         "誇張、他人の実績の流用(会えた実績の捏造等)、虚偽のエピソードは絶対に書かないでください。\n\n"
-        f"[トーン]\n{tone}\n\n"
+        f"[トーン]\n{tone}\n"
+        f"{voice_section}\n"
         f"[本人プロフィール]\n{grounding}\n"
     )
 

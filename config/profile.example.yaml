@@ -26,6 +26,7 @@ comm_response_speed: ""
 comm_conflict: ""
 comm_listening: ""
 comm_vulnerability: ""
+personality_cc_type_check: ""
 personality_comfort: ""
 personality_growth_point: ""
 
@@ -52,6 +53,3 @@ goal_meeting_condition: ""
 goal_red_flag: ""
 goal_green_flag: ""
 goal_success_definition: ""
-
-# --- 自己理解メモ(任意) ---
-selfnote_cc_type: ""  # (任意)

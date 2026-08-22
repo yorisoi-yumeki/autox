@@ -1,0 +1,26 @@
+[project]
+name = "autox"
+version = "0.1.0"
+description = "X(旧Twitter)アカウントの投稿生成・予約管理・分析・DM下書き支援を行うCLIツール(自動投稿・自動DM送信は行わない)"
+requires-python = ">=3.10"
+dependencies = [
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+ai = [
+    "anthropic>=0.40.0",
+]
+dev = [
+    "pytest>=7.0",
+]
+
+[project.scripts]
+autox = "autox.cli:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["autox*"]

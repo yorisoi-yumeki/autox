@@ -1,0 +1,34 @@
+# このファイルをコピーして config/settings.yaml を作り、中身を自分用に編集してください。
+#   cp config/settings.example.yaml config/settings.yaml
+# config/settings.yaml は .gitignore 対象なのでリポジトリにはコミットされません。
+
+# 投稿のトーン(生成AIへの指示のベースになります)
+tone: |
+  誠実で気取らない、少し丁寧語混じりの話し方。誇張や見栄を張らない。
+  相手を落とすためのテクニックではなく、素の考えを共有する姿勢で書く。
+
+# 投稿の柱(コンテンツカテゴリ)。ここに書いたもの以外は生成しない。
+content_pillars:
+  - key: relationship_values
+    label: 恋愛観
+    description: 恋愛や人間関係で大事にしていること、最近考えていること
+  - key: daily_life
+    label: 日常
+    description: 仕事終わりの過ごし方、休日の出来事など、事実ベースの日常
+  - key: hobby
+    label: 趣味
+    description: 趣味・好きなものについて語る投稿
+  - key: work_values
+    label: 仕事観
+    description: 仕事に対するスタンスや考え方(具体的な勤務先/個人情報は書かない)
+
+# 投稿するゴールデンタイム帯(この範囲内でランダムな時刻に予約する)
+golden_hour:
+  start: "20:00"
+  end: "22:00"
+  timezone: "Asia/Tokyo"
+
+# DM下書き生成の際に踏まえる、自分がどんな相手と繋がりたいか
+matching_criteria: |
+  価値観が近く、誠実にやり取りできる相手。
+  下心だけでなく、対話を大事にしてくれる人。

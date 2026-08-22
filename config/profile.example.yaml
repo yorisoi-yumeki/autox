@@ -1,0 +1,57 @@
+# これは価値観インタビューの回答を保存するファイルの雛形です。
+# 実データは `autox profile interview` を実行すると自動的に
+# config/profile.yaml (このファイルとは別。.gitignore対象)に保存されます。
+# 手で埋めたい場合は、このファイルを config/profile.yaml としてコピーし、
+# 各キーの右側に回答を書いてください(質問文は autox/profile/questions.py 参照)。
+#
+#   cp config/profile.example.yaml config/profile.yaml
+#
+# 空欄のキーは「未回答」として扱われ、生成AIには一般的なトーンで補うよう指示されます。
+
+# --- 恋愛観・パートナーシップ観 ---
+relationship_priority: ""
+relationship_pace: ""
+relationship_honesty: ""
+relationship_dealbreaker: ""
+relationship_ideal_time: ""
+relationship_past_lesson: ""
+
+# --- コミュニケーションのスタイル ---
+comm_style: ""
+comm_response_speed: ""
+comm_conflict: ""
+comm_emoji: ""
+comm_listening: ""
+comm_vulnerability: ""
+
+# --- 譲れない価値観・境界線 ---
+boundary_respect: ""
+boundary_consent: ""
+boundary_money: ""
+boundary_privacy: ""
+boundary_no_go: ""
+boundary_safety: ""
+
+# --- ライフスタイルの事実 ---
+lifestyle_work: ""
+lifestyle_weekday: ""
+lifestyle_weekend: ""
+lifestyle_area: ""
+lifestyle_health: ""
+lifestyle_routine: ""
+
+# --- 人柄・ユーモア ---
+personality_humor: ""
+personality_strength: ""
+personality_weakness: ""
+personality_hobby: ""
+personality_energy: ""
+personality_comfort: ""
+
+# --- 将来的に求める関係性 ---
+goal_relationship_type: ""
+goal_meeting_condition: ""
+goal_red_flag: ""
+goal_green_flag: ""
+goal_timeline: ""
+goal_success_definition: ""

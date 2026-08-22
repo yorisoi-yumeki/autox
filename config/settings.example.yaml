@@ -32,3 +32,7 @@ golden_hour:
 matching_criteria: |
   価値観が近く、誠実にやり取りできる相手。
   下心だけでなく、対話を大事にしてくれる人。
+
+# どのくらいの期間この運用を続けてみるか(人柄・価値観ではなく運用設定なので
+# config/profile.yaml ではなくこちらに置く)
+operation_timeline: "まずは3ヶ月ほど試してみる"

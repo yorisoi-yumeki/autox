@@ -7,30 +7,7 @@
 #   cp config/profile.example.yaml config/profile.yaml
 #
 # 空欄のキーは「未回答」として扱われ、生成AIには一般的なトーンで補うよう指示されます。
-
-# --- 恋愛観・パートナーシップ観 ---
-relationship_priority: ""
-relationship_pace: ""
-relationship_honesty: ""
-relationship_dealbreaker: ""
-relationship_ideal_time: ""
-relationship_past_lesson: ""
-
-# --- コミュニケーションのスタイル ---
-comm_style: ""
-comm_response_speed: ""
-comm_conflict: ""
-comm_emoji: ""
-comm_listening: ""
-comm_vulnerability: ""
-
-# --- 譲れない価値観・境界線 ---
-boundary_respect: ""
-boundary_consent: ""
-boundary_money: ""
-boundary_privacy: ""
-boundary_no_go: ""
-boundary_safety: ""
+# 末尾に (任意) と書いてあるキーは、埋めなくても中核プロフィールとしては完成扱いです。
 
 # --- ライフスタイルの事実 ---
 lifestyle_work: ""
@@ -40,18 +17,41 @@ lifestyle_area: ""
 lifestyle_health: ""
 lifestyle_routine: ""
 
-# --- 人柄・ユーモア ---
-personality_humor: ""
-personality_strength: ""
-personality_weakness: ""
+# --- 人柄・コミュニケーション ---
 personality_hobby: ""
-personality_energy: ""
+personality_strength: ""
+personality_temperament_check: ""
+comm_style: ""
+comm_response_speed: ""
+comm_conflict: ""
+comm_listening: ""
+comm_vulnerability: ""
 personality_comfort: ""
+personality_growth_point: ""
+
+# --- 恋愛観・パートナーシップ観 ---
+relationship_priority: ""
+relationship_pace: ""
+relationship_love_type_check: ""
+relationship_ideal_time: ""
+relationship_dealbreaker_scenario: ""
+relationship_past_lesson: ""  # (任意)
+
+# --- 譲れない価値観・境界線 ---
+boundary_honesty: ""
+boundary_no_go: ""
+boundary_consent: ""
+boundary_money: ""
+boundary_privacy: ""
+boundary_temperament_check: ""
+boundary_safety: ""
 
 # --- 将来的に求める関係性 ---
 goal_relationship_type: ""
 goal_meeting_condition: ""
 goal_red_flag: ""
 goal_green_flag: ""
-goal_timeline: ""
 goal_success_definition: ""
+
+# --- 自己理解メモ(任意) ---
+selfnote_cc_type: ""  # (任意)

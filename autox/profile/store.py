@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Callable
 
 from .. import config
-from .questions import QUESTION_BANK, Question, total_questions
+from .questions import CATEGORY_NOTES, QUESTION_BANK, Question, required_questions, total_questions
 
 
 def load() -> dict[str, str]:
@@ -17,14 +17,17 @@ def save(answers: dict[str, str]) -> None:
 
 
 def unanswered_questions(answers: dict[str, str]) -> list[Question]:
+    """未回答の質問(必須・任意とも)を、質問バンクの並び順で返す。"""
     return [q for q in QUESTION_BANK if not answers.get(q.key, "").strip()]
 
 
 def completion_rate(answers: dict[str, str]) -> float:
-    total = total_questions()
+    """必須(中核)質問だけを基準にした回答率。任意質問は分母に含めない。"""
+    required = required_questions()
+    total = len(required)
     if total == 0:
         return 0.0
-    answered = total - len(unanswered_questions(answers))
+    answered = sum(1 for q in required if answers.get(q.key, "").strip())
     return answered / total
 
 
@@ -40,15 +43,19 @@ def run_interview_cli(input_fn: Callable[[str], str] = input) -> dict[str, str]:
         print("すべての質問に回答済みです。config/profile.yaml を直接編集して更新もできます。")
         return answers
 
-    print(f"価値観インタビュー: 未回答 {len(to_ask)}問 / 全{total_questions()}問")
-    print("(Enterだけ押すとスキップして次回に回せます)\n")
+    print(f"価値観インタビュー: 未回答 {len(to_ask)}問 / 必須{total_questions()}問(任意の質問は除く)")
+    print("(Enterだけ押すとスキップして次回に回せます。任意の質問は答えなくても完成扱いです)\n")
 
     current_category = None
     for q in to_ask:
         if q.category != current_category:
             current_category = q.category
             print(f"\n--- {current_category} ---")
-        answer = input_fn(f"[{q.key}] {q.text}\n> ").strip()
+            note = CATEGORY_NOTES.get(current_category)
+            if note:
+                print(note)
+        tag = "(任意・スキップ可) " if q.optional else ""
+        answer = input_fn(f"{tag}[{q.key}] {q.text}\n> ").strip()
         if answer:
             answers[q.key] = answer
 

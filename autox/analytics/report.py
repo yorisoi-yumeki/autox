@@ -66,6 +66,27 @@ def _category_averages(daily: list[dict[str, Any]], posts_by_date: dict[dt.date,
     return {cat: sum(vals) / len(vals) for cat, vals in buckets.items()}
 
 
+def _elapsed_since_start(started_on: str | None) -> str:
+    """config/settings.yaml の started_on から、運用開始からの経過を人間向けの文字列にする。
+
+    終了日ではなく開始日なので、単純な経過日数/月数の目安表示にとどめる
+    (「あと何日で終わり」のような期限の意味は持たせない)。
+    """
+    if not started_on:
+        return "-"
+    try:
+        start = dt.date.fromisoformat(str(started_on))
+    except ValueError:
+        return "-"
+    days = (dt.date.today() - start).days
+    if days < 0:
+        return "-"
+    months = days // 30
+    if months >= 1:
+        return f"{days}日(約{months}ヶ月)"
+    return f"{days}日"
+
+
 def _weekday_averages(daily: list[dict[str, Any]]) -> dict[int, float]:
     buckets: dict[int, list[float]] = {}
     for row in daily:
@@ -178,6 +199,7 @@ _HTML_TEMPLATE = """<!doctype html>
   <div class="stat"><div class="label">フォロワー増減(期間累計)</div><div class="value">{follower_delta}</div></div>
   <div class="stat"><div class="label">平均エンゲージメント率</div><div class="value">{avg_engagement}</div></div>
   <div class="stat"><div class="label">記録日数</div><div class="value">{days_logged}</div></div>
+  <div class="stat"><div class="label">運用開始からの経過</div><div class="value">{elapsed_since_start}</div></div>
 </div>
 
 <h2>フォロワー推移</h2>
@@ -199,6 +221,7 @@ _HTML_TEMPLATE = """<!doctype html>
 
 
 def generate_report(out_path: Path | None = None) -> Path:
+    settings = config.load_settings()
     snapshots = tracker.list_snapshots()
     daily = _compute_daily_deltas(snapshots)
     posts_by_date = _posts_by_date()
@@ -232,6 +255,7 @@ def generate_report(out_path: Path | None = None) -> Path:
         follower_delta=follower_delta_str,
         avg_engagement=avg_engagement_str,
         days_logged=len(daily),
+        elapsed_since_start=_elapsed_since_start(settings.get("started_on")),
         followers_chart=_svg_line_chart(followers_points),
         engagement_chart=_svg_line_chart(
             [(d, r) for d, r in engagement_points]

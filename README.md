@@ -58,6 +58,24 @@ autox analytics log --followers 120 --likes 30 --replies 5 --impressions 4000
 autox analytics report                 # data/reports/report_*.html を生成
 ```
 
+## セッション・環境をまたいだ引き継ぎ(handoff)
+
+`config/profile.yaml`・`config/settings.yaml`・`data/autox.db`(下書きキュー・
+分析スナップショット)は個人情報のため `.gitignore` 対象で、Git経由では運ばれない。
+特にクラウド/リモート実行環境では、セッションを新規に開始するたびにリポジトリが
+まっさらに再クローンされるだけなので、前回セッションのこれらのファイルは
+自動的には引き継がれない。
+
+```bash
+autox handoff export              # data/handoff_bundle.yaml に現在の状態をまとめる
+autox handoff import <path>       # そのファイルから復元する(--force で既存データを上書き)
+```
+
+会話コンテキストが肥大化してリセットしたい時や、別のデバイス・実行環境で続きを
+やりたい時は、`handoff export` の出力をコピーして次のセッションに渡し、
+`handoff import` で復元してから作業を再開する。「経緯の要約」ではなく
+実データそのものを運ぶことで、引き継ぎ時の抜け漏れを防ぐ。
+
 ## X APIを取得したら
 
 `autox/scheduling/poster_stub.py` に実装手順をまとめてある。現状は

@@ -10,11 +10,13 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import sys
+from pathlib import Path
 
 from .analytics import report as analytics_report
 from .analytics import tracker as analytics_tracker
 from .content import generator, queue
 from .dm_assist import draft_reply
+from . import handoff
 from .profile import store as profile_store
 from .scheduling import scheduler
 
@@ -121,6 +123,23 @@ def _cmd_dm_draft(args: argparse.Namespace) -> None:
     print("\n※ 送信は行いません。内容を確認のうえ、ご自身でXアプリから送信してください。")
 
 
+def _cmd_handoff_export(args: argparse.Namespace) -> None:
+    path = handoff.write_bundle(Path(args.out) if args.out else None)
+    print(f"引き継ぎバンドルを書き出しました: {path}")
+    print("このファイルの中身を次のセッション(別環境・別デバイス含む)に渡し、")
+    print(f"`autox handoff import {path}` で復元してください。")
+
+
+def _cmd_handoff_import(args: argparse.Namespace) -> None:
+    data = handoff.read_bundle(Path(args.path))
+    try:
+        counts = handoff.import_bundle(data, force=args.force)
+    except RuntimeError as e:
+        print(f"エラー: {e}")
+        sys.exit(1)
+    print(f"復元しました: 下書き{counts['posts']}件 / スナップショット{counts['snapshots']}件")
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="autox", description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -179,6 +198,21 @@ def build_parser() -> argparse.ArgumentParser:
     p_dm_draft = dm_sub.add_parser("draft", help="受信DMへの返信案を生成する")
     p_dm_draft.add_argument("--input", help="DM本文が書かれたファイルパス(省略時は標準入力)")
     p_dm_draft.set_defaults(func=_cmd_dm_draft)
+
+    p_handoff = sub.add_parser(
+        "handoff",
+        help="profile/settings/下書きキューをまとめてexport/importする(セッション・環境間の引き継ぎ用)",
+    )
+    handoff_sub = p_handoff.add_subparsers(dest="handoff_command", required=True)
+
+    p_h_export = handoff_sub.add_parser("export", help="現在の状態を1ファイルにまとめて書き出す")
+    p_h_export.add_argument("--out", help="出力先パス(省略時 data/handoff_bundle.yaml)")
+    p_h_export.set_defaults(func=_cmd_handoff_export)
+
+    p_h_import = handoff_sub.add_parser("import", help="バンドルファイルから状態を復元する")
+    p_h_import.add_argument("path")
+    p_h_import.add_argument("--force", action="store_true", help="既存データがあっても上書きする")
+    p_h_import.set_defaults(func=_cmd_handoff_import)
 
     return parser
 
